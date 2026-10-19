@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BATAGORÉ — Renyah di Luar, Gurih di Dalam</title>
+<meta name="description" content="BATAGORÉ: batagor ikan renyah dengan saus kacang khas. Modern Indonesian Street Food.">
+<style>
+/* ===== 1. TOKENS (ubah warna di sini) ===== */
+:root{
+  --char:#151515; --char2:#1d1b19; --cream:#F5EBDD; --gold:#E99A35; --brown:#754322; --brown-d:#3a2011;
+  --muted:#cdbfae; --ease:cubic-bezier(.22,.8,.24,1);
+  --fs-hero:clamp(2.6rem,7vw,6rem); --fs-h2:clamp(2rem,4.5vw,3.6rem); --fs-p:clamp(1rem,1.2vw,1.12rem);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{background:var(--char);color:var(--cream);font-family:"Segoe UI",system-ui,-apple-system,Roboto,sans-serif;line-height:1.65;overflow-x:hidden}
+body.locked{overflow:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,.serif{font-family:Georgia,"Times New Roman",serif;font-weight:700;line-height:1.08;letter-spacing:-.01em}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
+.container{width:min(1200px,100% - 2.5rem);margin-inline:auto}
+section{position:relative}
+.eyebrow{font-size:.78rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.95rem 1.8rem;border-radius:999px;font-weight:600;border:1.5px solid transparent;cursor:pointer;font-size:1rem;font-family:inherit;transition:transform .3s var(--ease),box-shadow .3s,background .3s,color .3s}
+.btn:hover{transform:translateY(-3px)}
+.btn-primary{background:var(--gold);color:#1a1005;box-shadow:0 10px 30px -10px rgba(233,154,53,.7)}
+.btn-primary:hover{box-shadow:0 16px 36px -10px rgba(233,154,53,.9)}
+.btn-ghost{border-color:rgba(245,235,221,.4);color:var(--cream);background:transparent}
+.btn-ghost:hover{background:rgba(245,235,221,.1);border-color:var(--cream)}
+.img-wrap{background:linear-gradient(135deg,var(--brown),var(--brown-d));overflow:hidden}
+.img-wrap img{width:100%;height:100%;object-fit:cover}
+
+/* ===== 2. INTRO ===== */
+#intro{position:fixed;inset:0;z-index:1000;background:radial-gradient(ellipse at 50% 60%,#2a1a0e,var(--char) 70%);display:flex;align-items:center;justify-content:center;overflow:hidden;transition:opacity 1.2s ease,transform 1.2s var(--ease),visibility 1.2s}
+#intro.leaving{opacity:0;transform:scale(1.15);visibility:hidden;pointer-events:none}
+#particles{position:absolute;inset:0;width:100%;height:100%}
+.intro-bg{position:absolute;left:50%;top:50%;width:min(680px,80vw);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%) scale(.3);opacity:0;box-shadow:0 0 140px 30px rgba(233,154,53,.35);transition:transform 3.5s var(--ease),opacity 2s}
+.intro-bg::after{content:"";position:absolute;inset:0;background:radial-gradient(circle,rgba(21,21,21,.2) 30%,rgba(21,21,21,.85))}
+#intro.s2 .intro-bg{opacity:.6;transform:translate(-50%,-50%) scale(1)}
+#intro.s3 .intro-bg{opacity:.3;transform:translate(-50%,-50%) scale(1.12)}
+.sauce{position:absolute;left:50%;top:-5%;width:70px;height:0;background:linear-gradient(var(--brown),#9a5a2c);border-radius:0 0 60px 60px;transform:translateX(-50%);opacity:0;transition:height 2.5s ease .6s,opacity 1s}
+#intro.s2 .sauce{height:30vh;opacity:.85}
+#intro.s3 .sauce{opacity:0;transition:opacity 1s}
+.intro-head{position:absolute;left:0;right:0;top:50%;text-align:center;z-index:2;transform:translateY(-50%);transition:transform 1.2s var(--ease),opacity 1s}
+#intro.s2 .intro-head{transform:translateY(-50%) translateY(-34vh)}
+#intro.s3 .intro-head{opacity:0}
+.intro-logo{font-family:Georgia,serif;font-size:clamp(2.4rem,9vw,6rem);font-weight:700;letter-spacing:.12em;opacity:0;filter:blur(18px);transition:opacity 2s ease,filter 2s ease}
+.intro-logo span{color:var(--gold)}
+#intro.s1 .intro-logo{opacity:1;filter:blur(0)}
+.intro-stage{position:relative;z-index:2;text-align:center;padding:1.5rem;max-width:780px;text-shadow:0 4px 30px #000}
+.intro-line{font-size:clamp(1.8rem,5vw,3.6rem);opacity:0;transform:translateY(24px);transition:all 1s var(--ease)}
+.intro-line.gold{color:var(--gold);font-style:italic}
+#intro.s3 .intro-line.a,#intro.s3b .intro-line.gold{opacity:1;transform:none}
+.intro-desc{margin:1.2rem auto 0;max-width:520px;opacity:0;transform:translateY(16px);transition:all 1s var(--ease);font-size:var(--fs-p)}
+#intro.s4 .intro-desc{opacity:1;transform:none}
+.intro-cta{margin-top:1.6rem;opacity:0;transform:translateY(16px) scale(.95);transition:all 1s var(--ease);visibility:hidden}
+#intro.s5 .intro-cta{opacity:1;transform:none;visibility:visible}
+.intro-bar{position:absolute;left:0;right:0;bottom:0;padding:1rem 1.5rem 1.4rem;display:flex;align-items:center;gap:1rem;z-index:3}
+.bar{flex:1;height:3px;background:rgba(245,235,221,.15);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brown),var(--gold))}
+#pct{font-variant-numeric:tabular-nums;font-size:.85rem;min-width:4ch;color:var(--muted)}
+#skip{position:absolute;top:1.2rem;right:1.2rem;z-index:4;background:rgba(21,21,21,.6);color:var(--cream);border:1px solid rgba(245,235,221,.35);padding:.55rem 1.2rem;border-radius:999px;cursor:pointer;font:inherit;font-size:.9rem;backdrop-filter:blur(6px);transition:background .3s}
+#skip:hover{background:var(--gold);color:#1a1005}
+
+/* ===== 3. NAVBAR ===== */
+header.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:background .4s,padding .4s,box-shadow .4s;padding:1.2rem 0}
+header.nav.scrolled{background:rgba(21,21,21,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:.7rem 0;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+.nav .container{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.logo{font-family:Georgia,serif;font-size:1.5rem;font-weight:700;letter-spacing:.14em}
+.logo span{color:var(--gold)}
+.nav ul{display:flex;gap:2rem;list-style:none}
+.nav ul a{position:relative;font-size:.95rem;padding:.3rem 0}
+.nav ul a::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--gold);transition:width .3s var(--ease)}
+.nav ul a:hover::after,.nav ul a:focus-visible::after{width:100%}
+.nav .btn{padding:.65rem 1.3rem;font-size:.9rem}
+.burger{display:none;width:44px;height:44px;background:none;border:1px solid rgba(245,235,221,.3);border-radius:12px;cursor:pointer;position:relative;z-index:2}
+.burger span{position:absolute;left:11px;right:11px;height:2px;background:var(--cream);transition:.3s}
+.burger span:nth-child(1){top:15px}.burger span:nth-child(2){top:21px}.burger span:nth-child(3){top:27px}
+.burger[aria-expanded=true] span:nth-child(1){top:21px;transform:rotate(45deg)}
+.burger[aria-expanded=true] span:nth-child(2){opacity:0}
+.burger[aria-expanded=true] span:nth-child(3){top:21px;transform:rotate(-45deg)}
+
+/* ===== 4. HERO ===== */
+#beranda{min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:7rem 0 4rem;background:radial-gradient(ellipse at 75% 40%,rgba(233,154,53,.18),transparent 55%),var(--char);overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:3rem;align-items:center}
+.hero-copy h1{font-size:var(--fs-hero);margin:1rem 0 1.4rem}
+.hero-copy h1 em{color:var(--gold)}
+.hero-copy p.lead{font-size:var(--fs-p);color:var(--muted);max-width:520px;margin-bottom:2rem}
+.hero-actions{display:flex;flex-wrap:wrap;gap:1rem}
+.hero-stats{display:flex;gap:2rem;margin-top:2.5rem;flex-wrap:wrap}
+.hero-stats b{display:block;font-family:Georgia,serif;font-size:1.6rem;color:var(--gold)}
+.hero-stats small{color:var(--muted);font-size:.8rem}
+.hero-visual{position:relative;aspect-ratio:1;max-width:560px;width:100%;margin-inline:auto}
+.ring{position:absolute;border-radius:50%;border:1px solid rgba(233,154,53,.4)}
+.ring.r1{inset:-2%}.ring.r2{inset:8%;border-style:dashed;border-color:rgba(245,235,221,.2);animation:spin 60s linear infinite}
+.plate{position:absolute;inset:6%;border-radius:50%;box-shadow:0 40px 90px -20px rgba(0,0,0,.9),0 0 120px rgba(233,154,53,.25);animation:float 6s ease-in-out infinite}
+.plate img{border-radius:50%}
+.layer{position:absolute;inset:0;transition:transform .25s ease-out}
+.tag{position:absolute;background:rgba(21,21,21,.75);backdrop-filter:blur(8px);border:1px solid rgba(233,154,53,.45);padding:.45rem .9rem;border-radius:999px;font-size:.78rem;letter-spacing:.06em;white-space:nowrap}
+.tag.t1{top:10%;left:0}.tag.t2{bottom:14%;right:0}.tag.t3{bottom:3%;left:12%}
+.hline{position:absolute;top:50%;left:0;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(233,154,53,.5),transparent)}
+@keyframes float{50%{transform:translateY(-14px) rotate(1deg)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ===== 5. MENU ===== */
+.sec{padding:clamp(4.5rem,9vw,8rem) 0}
+.sec-head{max-width:640px;margin-bottom:3rem}
+.sec-head h2{font-size:var(--fs-h2);margin:.8rem 0 1rem}
+.sec-head p{color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8rem}
+.card{background:var(--char2);border:1px solid rgba(245,235,221,.08);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;transition:transform .45s var(--ease),box-shadow .45s,border-color .45s}
+.card:hover,.card:focus-within{transform:translateY(-10px) translateX(4px);box-shadow:0 30px 60px -20px rgba(233,154,53,.3),0 20px 40px -20px #000;border-color:rgba(233,154,53,.4)}
+.card .img-wrap{aspect-ratio:4/3;position:relative}
+.card .img-wrap img{transition:transform .8s var(--ease)}
+.card:hover .img-wrap img{transform:scale(1.1)}
+.badge{position:absolute;top:1rem;left:1rem;background:var(--gold);color:#1a1005;font-size:.72rem;font-weight:700;padding:.25rem .7rem;border-radius:999px;letter-spacing:.06em}
+.card-body{padding:1.5rem;display:flex;flex-direction:column;gap:.7rem;flex:1}
+.card h3{font-size:1.5rem}
+.card p{color:var(--muted);font-size:.97rem;flex:1}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:.6rem}
+.price{font-family:Georgia,serif;font-size:1.4rem;color:var(--gold)}
+.card .btn{padding:.6rem 1.4rem}
+
+/* ===== 6. CERITA ===== */
+#tentang{background:linear-gradient(180deg,var(--char),var(--char2));overflow:hidden}
+.story{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,6vw,5rem);align-items:center}
+.story-photos{position:relative;padding-bottom:18%}
+.story-photos .big{aspect-ratio:4/5;border-radius:240px 240px 24px 24px}
+.story-photos .small{position:absolute;right:0;bottom:0;width:48%;aspect-ratio:1;border-radius:24px;border:6px solid var(--char2);box-shadow:0 20px 50px #000}
+.deco-num{position:absolute;top:-2rem;left:-.5rem;font-family:Georgia,serif;font-size:clamp(6rem,16vw,12rem);color:transparent;-webkit-text-stroke:1px rgba(233,154,53,.55);line-height:1;z-index:2;pointer-events:none}
+.story-copy h2{font-size:var(--fs-h2);margin:.8rem 0 1.2rem}
+.story-copy>p.intro-p{color:var(--muted);margin-bottom:2rem}
+.points{display:grid;gap:1.3rem}
+.point{display:grid;grid-template-columns:auto 1fr;gap:1.1rem;padding-top:1.1rem;border-top:1px solid rgba(245,235,221,.12)}
+.point b{font-family:Georgia,serif;font-size:2rem;color:var(--gold);line-height:1}
+.point h3{font-size:1.2rem;margin-bottom:.2rem}
+.point p{color:var(--muted);font-size:.95rem}
+
+/* ===== 7. CTA ===== */
+#pesan{background:linear-gradient(rgba(58,32,17,.9),rgba(40,20,9,.95)),var(--brown-d);text-align:center;overflow:hidden;isolation:isolate}
+#pesan .bgimg{position:absolute;inset:0;z-index:-1;opacity:.35}
+.cta-inner{max-width:760px;margin-inline:auto}
+.cta-inner h2{font-size:clamp(2.2rem,6vw,4.6rem);margin:1rem 0 1.2rem}
+.cta-inner p.sub{opacity:.9;margin-bottom:2rem}
+.wa{background:#25D366;color:#06260f;box-shadow:0 12px 30px -10px rgba(37,211,102,.6)}
+
+/* ===== 8. FOOTER ===== */
+footer{background:#0e0e0e;padding:clamp(3.5rem,7vw,5.5rem) 0 1.5rem;border-top:1px solid rgba(233,154,53,.25)}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1.2fr 1.2fr;gap:2.5rem}
+footer h4{font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+footer p,footer li,footer address{color:var(--muted);font-size:.95rem;font-style:normal}
+footer ul{list-style:none;display:grid;gap:.5rem}
+footer a:hover{color:var(--gold)}
+.socials{display:flex;gap:.7rem;margin-top:1.2rem}
+.socials a{width:42px;height:42px;border-radius:50%;border:1px solid rgba(245,235,221,.25);display:grid;place-items:center;transition:.3s}
+.socials a:hover{background:var(--gold);color:#1a1005;border-color:var(--gold);transform:translateY(-3px)}
+.socials svg{width:19px;height:19px;fill:currentColor}
+.copy{margin-top:3rem;padding-top:1.3rem;border-top:1px solid rgba(245,235,221,.1);text-align:center;font-size:.85rem}
+
+/* ===== REVEAL ===== */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:var(--d,0s)}
+.reveal.in{opacity:1;transform:none}
+.no-js .reveal{opacity:1;transform:none}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:960px){
+  .hero-grid,.story{grid-template-columns:1fr}
+  .hero-visual{max-width:440px;order:-1}
+  .cards{grid-template-columns:1fr;max-width:520px;margin-inline:auto}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .burger{display:block}
+  .nav .cta-d{display:none}
+  .nav ul{position:fixed;top:0;right:0;height:100vh;height:100dvh;width:min(80vw,320px);background:rgba(21,21,21,.98);flex-direction:column;padding:6rem 2rem 2rem;gap:1.4rem;transform:translateX(100%);visibility:hidden;transition:transform .45s var(--ease),visibility .45s;box-shadow:-20px 0 60px rgba(0,0,0,.6)}
+  .nav ul.open{transform:none;visibility:visible}
+  .nav ul a{font-size:1.2rem}
+  .nav nav{position:static}
+}
+@media(max-width:560px){.foot-grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important}
+}
+</style>
+</head>
+<body class="no-js locked">
+
+<!-- ===== INTRO CINEMATIC (~15 detik) ===== -->
+<div id="intro" role="dialog" aria-label="Intro BATAGORÉ">
+  <canvas id="particles" aria-hidden="true"></canvas>
+  <button id="skip" type="button">Lewati Intro ›</button>
+  <div class="sauce" aria-hidden="true"></div>
+  <div class="intro-bg img-wrap" aria-hidden="true"><img data-src="hero" alt=""></div>
+  <div class="intro-head"><div class="intro-logo">BATAGOR<span>É</span></div></div>
+  <div class="intro-stage">
+    <h2 class="intro-line a">Bukan Sekadar Batagor.</h2>
+    <h2 class="intro-line gold">Ini Pengalaman Rasa.</h2>
+    <p class="intro-desc">Batagor renyah, saus kacang autentik, dibuat untuk memanjakan setiap gigitan.</p>
+    <button type="button" id="introGo" class="btn btn-primary intro-cta">Jelajahi Menu</button>
+  </div>
+  <div class="intro-bar" aria-hidden="true"><div class="bar"><i id="barFill"></i></div><span id="pct">0%</span></div>
+</div>
+
+<!-- ===== NAVBAR ===== -->
+<header class="nav" id="nav">
+  <div class="container">
+    <a href="#beranda" class="logo" aria-label="BATAGORÉ beranda">BATAGOR<span>É</span></a>
+    <nav aria-label="Navigasi utama">
+      <ul id="navList">
+        <li><a href="#beranda">Beranda</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#tentang">Tentang Kami</a></li>
+        <li><a href="#lokasi">Lokasi</a></li>
+      </ul>
+    </nav>
+    <a href="#pesan" class="btn btn-primary cta-d">Pesan Sekarang</a>
+    <button class="burger" id="burger" type="button" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="navList"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main>
+<!-- ===== HERO ===== -->
+<section id="beranda" aria-labelledby="hero-title">
+  <div class="container hero-grid">
+    <div class="hero-copy reveal">
+      <p class="eyebrow">Authentic Indonesian Street Food</p>
+      <h1 id="hero-title">Renyahnya Bikin <em>Jatuh Hati.</em></h1>
+      <p class="lead">Batagor ikan yang digoreng garing, disajikan hangat dan disiram saus kacang khas dengan perpaduan gurih, manis, dan sedikit pedas. Satu gigitan, langsung terasa bedanya.</p>
+      <div class="hero-actions">
+        <a href="#menu" class="btn btn-primary">Lihat Menu</a>
+        <a href="#tentang" class="btn btn-ghost">Cerita Kami</a>
+      </div>
+      <div class="hero-stats">
+        <div><b>3</b><small>Pilihan menu</small></div>
+        <div><b>Fresh</b><small>Digoreng saat dipesan</small></div>
+        <div><b>Saus</b><small>Kacang resep sendiri</small></div>
+      </div>
+    </div>
+    <div class="hero-visual reveal" id="heroVisual" style="--d:.15s">
+      <div class="layer" data-depth="10"><div class="ring r1"></div><div class="ring r2"></div></div>
+      <div class="layer" data-depth="-22"><div class="plate img-wrap"><img data-src="hero" alt="Sepiring batagor dengan saus kacang"></div></div>
+      <div class="layer" data-depth="-34"><span class="tag t1">★ Saus kacang khas</span><span class="tag t2">Renyah &amp; gurih</span><span class="tag t3">Street food modern</span></div>
+      <div class="layer" data-depth="6"><div class="hline"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MENU ===== -->
+<section id="menu" class="sec" aria-labelledby="menu-title">
+  <div class="container">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Menu Favorit</p>
+      <h2 id="menu-title">Tiga cara menikmati batagor.</h2>
+      <p>Pilih yang paling cocok dengan seleramu. Semua disajikan hangat dengan saus kacang khas kami.</p>
+    </div>
+    <div class="cards" id="cards"></div>
+  </div>
+</section>
+
+<!-- ===== CERITA BRAND ===== -->
+<section id="tentang" class="sec" aria-labelledby="about-title">
+  <div class="container story">
+    <div class="story-photos reveal">
+      <span class="deco-num" aria-hidden="true">01</span>
+      <div class="big img-wrap"><img data-src="story1" loading="lazy" alt="Batagor goreng yang baru diangkat"></div>
+      <div class="small img-wrap"><img data-src="story2" loading="lazy" alt="Saus kacang dituang di atas batagor"></div>
+    </div>
+    <div class="story-copy">
+      <p class="eyebrow reveal">Tentang Kami</p>
+      <h2 id="about-title" class="reveal">Sederhana, tapi dikerjakan dengan serius.</h2>
+      <p class="intro-p reveal">Batagor lahir dari jajanan kaki lima Bandung. Kami membawa rasa itu ke tampilan yang lebih modern, tanpa mengubah hal yang membuatnya dicintai: renyah di luar, gurih di dalam.</p>
+      <div class="points">
+        <div class="point reveal"><b>01</b><div><h3>Keunikan Batagor</h3><p>Perpaduan isian ikan dan tahu yang digoreng hingga bertekstur garing.</p></div></div>
+        <div class="point reveal"><b>02</b><div><h3>Proses Penyajian</h3><p>Digoreng saat pesanan masuk, lalu disajikan hangat bersama pelengkap.</p></div></div>
+        <div class="point reveal"><b>03</b><div><h3>Bahan Pilihan</h3><p>Ikan, tahu, dan bumbu yang kami pilih sendiri untuk setiap batch.</p></div></div>
+        <div class="point reveal"><b>04</b><div><h3>Saus Kacang Khas</h3><p>Kacang tanah sangrai, bawang putih, cabai, dan gula merah dalam resep kami.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA PEMESANAN ===== -->
+<section id="pesan" class="sec" aria-labelledby="cta-title">
+  <div class="bgimg img-wrap"><img data-src="cta" loading="lazy" alt=""></div>
+  <div class="container cta-inner reveal">
+    <p class="eyebrow">Pesan Sekarang</p>
+    <h2 id="cta-title">Batagor Favoritmu Menunggu.</h2>
+    <p class="sub">Kirim pesananmu lewat WhatsApp. Kami siapkan hangat dan renyah.</p>
+    <a id="waMain" class="btn wa" href="#" target="_blank" rel="noopener noreferrer">Pesan via WhatsApp</a>
+  </div>
+</section>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer id="lokasi">
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        <a href="#beranda" class="logo" aria-label="BATAGORÉ">BATAGOR<span>É</span></a>
+        <p style="margin-top:1rem;max-width:300px">Modern Indonesian Street Food. Renyah di Luar, Gurih di Dalam.</p>
+        <div class="socials" id="socials"></div>
+      </div>
+      <div><h4>Navigasi</h4><ul><li><a href="#beranda">Beranda</a></li><li><a href="#menu">Menu</a></li><li><a href="#tentang">Tentang Kami</a></li><li><a href="#pesan">Pesan</a></li></ul></div>
+      <div><h4>Lokasi &amp; Jam</h4><address id="fAddr"></address><ul id="fHours" style="margin-top:.8rem"></ul></div>
+      <div><h4>Kontak</h4><ul><li><a id="fWa" href="#" target="_blank" rel="noopener noreferrer"></a></li><li><a id="fMail" href="#"></a></li></ul></div>
+    </div>
+    <p class="copy">© <span id="yr"></span> <span id="fName"></span>. Semua hak dilindungi.</p>
+  </div>
+</footer>
+
+<script>
+/* ===== KONFIGURASI (edit di sini) ===== */
+const CONFIG = {
+  brand: "BATAGORÉ",
+  whatsapp: "6281234567890",           // format internasional, tanpa + dan tanpa 0 di depan
+  waMessage: "Halo BATAGORÉ, saya ingin memesan batagor.",
+  address: "Jl. Contoh Rasa No. 12, Bandung, Jawa Barat 40111",
+  hours: ["Senin–Jumat: 10.00–21.00", "Sabtu–Minggu: 09.00–22.00"],
+  email: "halo@batagore.example",
+  socials: [
+    {name:"Instagram", url:"https://instagram.com/", path:"M12 2.2c3.2 0 3.6 0 4.8.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8C2.4 3.9 4 2.4 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zm0 3.6a6.2 6.2 0 100 12.4 6.2 6.2 0 000-12.4zM12 16a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.4 1.4 0 100 2.9 1.4 1.4 0 000-2.9z"},
+    {name:"Facebook", url:"https://facebook.com/", path:"M24 12a12 12 0 10-13.9 11.9v-8.4H7.1V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0024 12z"},
+    {name:"TikTok", url:"https://tiktok.com/", path:"M19.6 6.7a4.8 4.8 0 01-3.8-4.2V2h-3.4v13.7a2.9 2.9 0 11-2-2.8V9.4a6.3 6.3 0 105.4 6.3V9a8.2 8.2 0 004.8 1.5V7.1a4.8 4.8 0 01-1-.4z"}
+  ],
+  /* Ganti URL gambar sesuai kebutuhan; bila gagal dimuat, fallback SVG tampil otomatis */
+  images: {
+    hero:  "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=900&q=70",
+    story1:"https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=70",
+    story2:"https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=600&q=70",
+    cta:   "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1400&q=70"
+  }
+};
+/* Data menu: edit harga & deskripsi di sini */
+const MENU = [
+  {name:"Batagor Original", desc:"Klasik renyah berisi ikan dan tahu, disiram saus kacang khas dan perasan jeruk limau.", price:20000, badge:"Terlaris", img:"https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=700&q=70"},
+  {name:"Batagor Spesial", desc:"Porsi lebih besar dengan tambahan siomay, saus ekstra, kecap, dan sambal pilihan.", price:28000, badge:"Spesial", img:"https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=700&q=70"},
+  {name:"Batagor Kuah", desc:"Batagor hangat dalam kuah gurih berbumbu, cocok disantap saat cuaca dingin.", price:24000, badge:"Hangat", img:"https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=700&q=70"}
+];
+
+/* ===== UTIL ===== */
+const $ = (s, c=document) => c.querySelector(s);
+const $$ = (s, c=document) => [...c.querySelectorAll(s)];
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const rupiah = n => "Rp " + n.toLocaleString("id-ID");
+const waLink = msg => `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
+
+/* Fallback gambar */
+const FALLBACK = "data:image/svg+xml;utf8," + encodeURIComponent(
+ `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><radialGradient id='g' cx='50%' cy='45%'><stop offset='0' stop-color='#E99A35'/><stop offset='1' stop-color='#3a2011'/></radialGradient></defs><rect width='400' height='300' fill='url(#g)'/><text x='200' y='165' font-size='44' text-anchor='middle' fill='#F5EBDD' font-family='Georgia'>BATAGORÉ</text></svg>`);
+function setImg(img, src){
+  img.addEventListener("error", () => { if(img.src !== FALLBACK) img.src = FALLBACK; }, {once:true});
+  img.src = src;
+}
+
+/* ===== RENDER KONTEN ===== */
+$("#cards").innerHTML = MENU.map((m,i) => `
+  <article class="card reveal" style="--d:${i*.12}s">
+    <div class="img-wrap"><img data-menu="${i}" loading="lazy" width="700" height="525" alt="${m.name}"><span class="badge">${m.badge}</span></div>
+    <div class="card-body"><h3>${m.name}</h3><p>${m.desc}</p>
+      <div class="card-foot"><span class="price">${rupiah(m.price)}</span>
+      <button type="button" class="btn btn-primary" data-order="${i}" aria-label="Pesan ${m.name}">Pesan</button></div></div>
+  </article>`).join("");
+$$("img[data-menu]").forEach(i => setImg(i, MENU[i.dataset.menu].img));
+$$("img[data-src]").forEach(i => setImg(i, CONFIG.images[i.dataset.src]));
+$("#socials").innerHTML = CONFIG.socials.map(s => `<a href="${s.url}" target="_blank" rel="noopener noreferrer" aria-label="${s.name}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${s.path}"/></svg></a>`).join("");
+$("#fAddr").textContent = CONFIG.address;
+$("#fHours").innerHTML = CONFIG.hours.map(h => `<li>${h}</li>`).join("");
+$("#fWa").textContent = "WhatsApp +" + CONFIG.whatsapp; $("#fWa").href = waLink(CONFIG.waMessage);
+$("#fMail").textContent = CONFIG.email; $("#fMail").href = "mailto:" + CONFIG.email;
+$("#fName").textContent = CONFIG.brand; $("#yr").textContent = new Date().getFullYear();
+$("#waMain").href = waLink(CONFIG.waMessage);
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-order]"); if(!b) return;
+  const m = MENU[b.dataset.order];
+  window.open(waLink(`Halo ${CONFIG.brand}, saya ingin memesan 1 porsi ${m.name} (${rupiah(m.price)}).`), "_blank", "noopener");
+});
+
+/* ===== NAVBAR ===== */
+const nav = $("#nav"), burger = $("#burger"), list = $("#navList");
+const onScroll = () => nav.classList.toggle("scrolled", scrollY > 40);
+addEventListener("scroll", onScroll, {passive:true}); onScroll();
+function closeNav(){ list.classList.remove("open"); burger.setAttribute("aria-expanded","false"); burger.setAttribute("aria-label","Buka menu navigasi"); }
+burger.addEventListener("click", () => {
+  const o = list.classList.toggle("open");
+  burger.setAttribute("aria-expanded", o); burger.setAttribute("aria-label", o ? "Tutup menu navigasi" : "Buka menu navigasi");
+});
+addEventListener("keydown", e => { if(e.key === "Escape") closeNav(); });
+$$('a[href^="#"]').forEach(a => a.addEventListener("click", e => {
+  const t = $(a.getAttribute("href")); if(!t) return;
+  e.preventDefault(); closeNav();
+  t.scrollIntoView({behavior: reduced ? "auto" : "smooth", block:"start"});
+  history.replaceState(null, "", a.getAttribute("href"));
+}));
+
+/* ===== SCROLL REVEAL ===== */
+document.body.classList.remove("no-js");
+const io = "IntersectionObserver" in window ? new IntersectionObserver((es, o) => es.forEach(en => {
+  if(en.isIntersecting){ en.target.classList.add("in"); o.unobserve(en.target); }
+}), {threshold:.12, rootMargin:"0px 0px -6% 0px"}) : null;
+$$(".reveal").forEach(el => io ? io.observe(el) : el.classList.add("in"));
+
+/* ===== PARALLAX HERO (pointer) ===== */
+const hv = $("#heroVisual");
+if(!reduced && matchMedia("(pointer:fine)").matches){
+  const layers = $$(".layer", hv); let raf = 0; const zone = $("#beranda");
+  zone.addEventListener("pointermove", e => {
+    const r = hv.getBoundingClientRect();
+    const x = (e.clientX - r.left - r.width/2) / r.width, y = (e.clientY - r.top - r.height/2) / r.height;
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => layers.forEach(l => { const d = +l.dataset.depth; l.style.transform = `translate(${x*d}px,${y*d}px)`; }));
+  });
+  zone.addEventListener("pointerleave", () => layers.forEach(l => l.style.transform = ""));
+}
+
+/* ===== INTRO ===== */
+(function intro(){
+  const el = $("#intro"), fill = $("#barFill"), pct = $("#pct");
+  const TOTAL = reduced ? 3000 : 15000;
+  let done = false, rafId = 0, pRaf = 0; const timers = []; const start = performance.now();
+
+  /* Partikel emas */
+  const cv = $("#particles"), ctx = cv.getContext("2d"); let W, H; const P = [];
+  function size(){ const d = Math.min(devicePixelRatio||1, 2); W = cv.width = innerWidth*d; H = cv.height = innerHeight*d; }
+  size(); addEventListener("resize", size);
+  if(!reduced){
+    const n = innerWidth < 600 ? 45 : 90;
+    for(let i=0;i<n;i++) P.push({x:Math.random(),y:Math.random(),r:Math.random()*2+.5,vx:(Math.random()-.5)*.00008,vy:-Math.random()*.00018-.00004,a:Math.random()*.7+.2});
+    (function draw(){
+      ctx.clearRect(0,0,W,H);
+      ctx.shadowColor = "#E99A35"; ctx.shadowBlur = 8;
+      P.forEach(p => { p.x += p.vx*16; p.y += p.vy*16; if(p.y < -.02){p.y = 1.02; p.x = Math.random();}
+        ctx.beginPath(); ctx.fillStyle = `rgba(233,154,53,${p.a})`;
+        ctx.arc(p.x*W, p.y*H, p.r*(W/1000+.6), 0, 6.283); ctx.fill(); });
+      pRaf = requestAnimationFrame(draw);
+    })();
+  }
+
+  /* Timeline (ms) */
+  const steps = reduced ? [[0,"s1"],[0,"s2"],[0,"s3"],[0,"s3b"],[0,"s4"],[0,"s5"]]
+    : [[300,"s1"],[3000,"s2"],[6000,"s3"],[7500,"s3b"],[9000,"s4"],[12000,"s5"]];
+  steps.forEach(([t,c]) => timers.push(setTimeout(() => el.classList.add(c), t)));
+  timers.push(setTimeout(() => finish(), TOTAL));
+
+  /* Progress 0-100% */
+  (function tick(now){
+    if(done) return;
+    const p = Math.min(1, (now - start)/TOTAL);
+    fill.style.width = (p*100) + "%"; pct.textContent = Math.round(p*100) + "%";
+    rafId = requestAnimationFrame(tick);
+  })(start);
+
+  function finish(goMenu){
+    if(done) return; done = true;
+    timers.forEach(clearTimeout); cancelAnimationFrame(rafId); cancelAnimationFrame(pRaf);
+    fill.style.width = "100%"; pct.textContent = "100%";
+    el.classList.add("leaving");
+    document.body.classList.remove("locked");
+    setTimeout(() => el.remove(), reduced ? 50 : 1300);
+    if(goMenu === true) setTimeout(() => $("#menu").scrollIntoView({behavior: reduced ? "auto":"smooth"}), 400);
+  }
+  $("#skip").addEventListener("click", () => finish());
+  $("#introGo").addEventListener("click", () => finish(true));
+  addEventListener("keydown", e => { if(e.key === "Escape") finish(); });
+  $("#skip").focus({preventScroll:true});
+})();
+</script>
+</body>
+</html>
